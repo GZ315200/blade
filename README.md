@@ -1,6 +1,6 @@
 _Hi 
-    everyone, i wanna do this project just for webservice
-    server & client demo``_
+    everyone, this project is just a server & client demo for webservice
+    ``_
     if you have any problems with these application,
     please contact me with email or issues on my project 
                                                     
