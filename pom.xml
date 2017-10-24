@@ -14,6 +14,7 @@
     <modules>
         <module>ws-client</module>
         <module>ws-server</module>
+        <module>jmx-app</module>
     </modules>
 
 </project>
