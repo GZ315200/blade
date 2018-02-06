@@ -1,4 +1,4 @@
-package com.igeek.jmxApp;
+package com.igeek.jmxapp;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class JmxAppApplicationTests {
+public class WsServerApplicationTests {
 
 	@Test
 	public void contextLoads() {

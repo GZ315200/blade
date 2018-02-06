@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn">
+    <Properties>
+        <Property name="basePath">/Users/mazean/zean/tamboo-agent</Property>
+    </Properties>
+
+    <Appenders>
+        <RollingFile name="fileLogger" fileName="${basePath}/tamboo-agent.log" filePattern="${basePath}/tamboo-agent-%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <pattern>[%p %d{yyyy-MM-dd HH:mm:ss}] {%c:%L} - %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="10" modulate="true" />
+                <SizeBasedTriggeringPolicy size="50 MB" />
+            </Policies>
+        </RollingFile>
+
+        <DefaultRolloverStrategy max="20"/>
+
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout	pattern="[%p %d{yyyy-MM-dd HH:mm:ss}] {%c:%L} - %m%n" />
+        </Console>
+
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.igeek" level="debug" additivity="true">
+            <appender-ref ref="fileLogger" level="debug" />
+        </Logger>
+        <Root level="info" additivity="false">
+            <appender-ref ref="console" />
+        </Root>
+    </Loggers>
+
+</Configuration>

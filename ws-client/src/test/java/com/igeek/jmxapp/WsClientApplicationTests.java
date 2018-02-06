@@ -1,4 +1,4 @@
-package com.igeek.jmxApp;
+package com.igeek.jmxapp;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
