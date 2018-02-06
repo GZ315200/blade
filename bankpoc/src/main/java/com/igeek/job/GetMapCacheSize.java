@@ -21,7 +21,7 @@ public class GetMapCacheSize implements Runnable {
     }
 
     public static void start() {
-        Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new GetMapCacheSize(),2,3, TimeUnit.SECONDS);
+//        Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new GetMapCacheSize(),2,3, TimeUnit.SECONDS);
     }
 
 }

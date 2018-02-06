@@ -1,5 +1,6 @@
 package com.igeek.service;
 
+import com.google.common.collect.Lists;
 import com.igeek.bean.Message;
 import com.igeek.cache.Queue;
 import com.igeek.util.PropertiesUtils;
@@ -7,36 +8,37 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
+import java.util.List;
 import java.util.concurrent.Executors;
 
 /**
  * @author Gyges Zean
  * @date 2018/1/31
  */
-public class SentMsgToKafkaWithJDBC implements Runnable {
+public class HandlerMysqlDataService implements Runnable {
 
     protected int messageStartPosition;
 
     protected int messageEndPosition;
 
-    private static Logger logger = LoggerFactory.getLogger(SentMsgToKafkaWithJDBC.class);
+    private static Logger logger = LoggerFactory.getLogger(HandlerMysqlDataService.class);
 
     private static class SentMsgHolder {
-        private static final SentMsgToKafkaWithJDBC sentMsgToKafkaWithJDBC = new SentMsgToKafkaWithJDBC();
+        private static final HandlerMysqlDataService sentMsgToKafkaWithJDBC = new HandlerMysqlDataService();
 
         private SentMsgHolder() {
         }
     }
 
-    public SentMsgToKafkaWithJDBC(int messageStartPosition, int messageEndPosition) {
+    public HandlerMysqlDataService(int messageStartPosition, int messageEndPosition) {
         this.messageStartPosition = messageStartPosition;
         this.messageEndPosition = messageEndPosition;
     }
 
-    public SentMsgToKafkaWithJDBC() {
+    public HandlerMysqlDataService() {
     }
 
-    public static synchronized SentMsgToKafkaWithJDBC getInstance() {
+    public static synchronized HandlerMysqlDataService getInstance() {
         return SentMsgHolder.sentMsgToKafkaWithJDBC;
     }
 
@@ -66,15 +68,17 @@ public class SentMsgToKafkaWithJDBC implements Runnable {
             ResultSet rs = stmt.executeQuery(sql);
 
             // 展开结果集数据库
+            List<Message> messages= Lists.newArrayList();
             while (rs.next()) {
-                Message message = new Message();
                 // 通过字段检索
+                Message message = new Message();
                 String sink = rs.getString("sink");
                 String source = rs.getString("source");
                 message.setSink(sink);
                 message.setSource(source);
-                com.igeek.cache.Queue.queue.offer(message);
+                messages.add(message);
             }
+            com.igeek.cache.Queue.queue.offer(messages);
             // 完成后关闭
             rs.close();
             stmt.close();
@@ -106,6 +110,6 @@ public class SentMsgToKafkaWithJDBC implements Runnable {
     }
 
     public void start() {
-        Executors.newFixedThreadPool(1).execute(new SentMsgToKafkaWithJDBC(Queue.queue.size(), Queue.queue.size() + 100));
+        Executors.newFixedThreadPool(1).execute(new HandlerMysqlDataService(Queue.queue.size(), Queue.queue.size() + 100));
     }
 }

@@ -2,6 +2,8 @@ package com.igeek.controller;
 
 import com.igeek.bean.Message;
 
+import java.util.List;
+
 
 /**
  * @author Gyges Zean
@@ -13,4 +15,5 @@ public interface MessageController {
 
     public void doAfter(Message message);
 
+    void doBefore(List<Message> messages);
 }

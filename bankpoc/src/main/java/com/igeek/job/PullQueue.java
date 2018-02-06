@@ -61,15 +61,19 @@ public class PullQueue implements Runnable {
         pullMessage(new MessageController() {
             @Override
             public void doBefore(Message message) {
-                messageList.add(message);
-                if (messageList.size() == SIZE) {
-                    logger.info("the current message size is :" + messageList.size());
-                    MessageCache.cache.put(ThreadLocalRandom.current().nextInt(), messageList);
-                }
+
             }
             @Override
             public void doAfter(Message message) {
                 logger.info("message content is :",message.toString());
+            }
+
+            @Override
+            public void doBefore(List<Message> messages) {
+                if (messages.size() == SIZE) {
+//                    logger.info("the current message size is :" + messages.size());
+                    MessageCache.cache.put(ThreadLocalRandom.current().nextInt(), messages);
+                }
             }
         });
     }

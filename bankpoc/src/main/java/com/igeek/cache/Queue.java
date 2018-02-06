@@ -2,6 +2,7 @@ package com.igeek.cache;
 
 import com.igeek.bean.Message;
 
+import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
 
 /**
@@ -10,5 +11,5 @@ import java.util.concurrent.LinkedBlockingDeque;
  */
 public class Queue {
 
-    public static java.util.Queue<Message> queue = new LinkedBlockingDeque<>();
+    public static java.util.Queue<List<Message>> queue = new LinkedBlockingDeque<>();
 }

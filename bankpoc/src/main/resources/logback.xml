@@ -6,8 +6,8 @@
         </layout>
     </appender>
 
-    <logger name="com.igeek" level="TRACE"/>
-    <root level="debug">
+    <logger name="com.igeek" level="info"/>
+    <root level="info">
         <appender-ref ref="STDOUT"/>
     </root>
 </configuration>

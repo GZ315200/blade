@@ -1,23 +1,36 @@
 package com.igeek.service;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 /**
  * @author Gyges Zean
  * @date 2018/2/5
  */
-public class HolderMessageService {
+public class HandlerMessageService {
 
 
     private static int fetchSize = 100;
 
     private static List<String> messages = Lists.newArrayList();
 
+    private static List<Integer> keys = Lists.newArrayList();
+
     private static void addMessage() {
         for (int i = 0; i <= 100000; i++) {
             messages.add("" + i);
+        }
+    }
+
+    private static void addKey() {
+        for (int i = 0; i <= 100000; i++) {
+            keys.add(i);
         }
     }
 
@@ -52,6 +65,29 @@ public class HolderMessageService {
 
     public static void main(String[] args) {
         addMessage();
-        fetchMessage();
+        addKey();
+//        fetchMessage();
+        messages.stream().parallel().forEach(s -> {
+            FutureTask<Map<Integer,String>> task = new FutureTask<Map<Integer,String>>(
+                    new Callable<Map<Integer,String>>() {
+                        @Override
+                        public Map<Integer,String> call() throws Exception {
+                            Map<Integer,String> maps = Maps.newHashMap();
+                            for (int i = 1; i <= keys.size(); i ++) {
+                                maps.put(i,s);
+                            }
+                            return maps;
+                        }
+                    }
+            );
+            try {
+                System.out.println(task.get().values().toString());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            new Thread(task).start();
+        });
     }
 }

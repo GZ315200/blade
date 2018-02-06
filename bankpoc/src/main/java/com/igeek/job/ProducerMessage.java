@@ -44,13 +44,11 @@ public class ProducerMessage implements Runnable {
 
     public void producerMessageInfo() {
         KafkaProducer producer = new KafkaProducer(KafkaConfig.getProducerProperties());
-        while (true) {
-            for (Object key : MessageCache.cache.keySet()) {
-                List<Message> messageList = MessageCache.cache.get(key);
-                messageList.stream().filter(message -> !Objects.isNull(message)).forEach(message -> {
-                    producer.send(new ProducerRecord<>(TOPIC, key, message), new MyCallBack(System.currentTimeMillis(), key.toString(), message.toString()));
-                });
-            }
+        for (Object key : MessageCache.cache.keySet()) {
+            List<Message> messageList = MessageCache.cache.get(key);
+            messageList.stream().filter(message -> !Objects.isNull(message)).forEach(message -> {
+                producer.send(new ProducerRecord<>(TOPIC, key, message), new MyCallBack(System.currentTimeMillis(), key.toString(), message.toString()));
+            });
         }
 
     }
@@ -90,8 +88,6 @@ public class ProducerMessage implements Runnable {
 
 
     public void start() {
-        if (MessageCache.cache.size() > 0) {
-            Executors.newScheduledThreadPool(1).scheduleAtFixedRate(ProducerMessage.getInstance(), 10, 10, TimeUnit.SECONDS);
-        }
+        Executors.newScheduledThreadPool(1).scheduleAtFixedRate(ProducerMessage.getInstance(), 10, 5, TimeUnit.SECONDS);
     }
 }
