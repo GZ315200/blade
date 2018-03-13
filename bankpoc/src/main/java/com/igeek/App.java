@@ -1,9 +1,10 @@
 package com.igeek;
 
 
+import com.igeek.handler.HandlerMysqlDataService;
 import com.igeek.job.GetMapCacheSize;
 import com.igeek.job.ProducerMessage;
-import com.igeek.service.SentMsgToKafkaWithJDBC;
+
 import com.igeek.job.PullQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +19,11 @@ public class App {
 
     public static void main(String[] args) {
         logger.info("start to query the DB data...");
-        SentMsgToKafkaWithJDBC.getInstance().start();
+        new HandlerMysqlDataService().start();
         logger.info("start to collect the data...");
-        PullQueue.getInstance().start();
+        new PullQueue().start();
         logger.info("start to producer message to kafka...");
-        ProducerMessage.getInstance().start();
+        new ProducerMessage().start();
         GetMapCacheSize.start();
     }
 

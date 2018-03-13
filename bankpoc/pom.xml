@@ -73,5 +73,13 @@
             <version>10.2.0.4.0</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.5.5</version>
+        </dependency>
+
+
     </dependencies>
 </project>

@@ -1,4 +1,4 @@
-package com.igeek.service;
+package com.igeek.handler;
 
 import com.google.common.collect.Lists;
 import com.igeek.bean.Message;
@@ -23,11 +23,7 @@ public class HandlerMysqlDataService implements Runnable {
 
     private static Logger logger = LoggerFactory.getLogger(HandlerMysqlDataService.class);
 
-    private static class SentMsgHolder {
-        private static final HandlerMysqlDataService sentMsgToKafkaWithJDBC = new HandlerMysqlDataService();
-
-        private SentMsgHolder() {
-        }
+    public HandlerMysqlDataService() {
     }
 
     public HandlerMysqlDataService(int messageStartPosition, int messageEndPosition) {
@@ -35,12 +31,6 @@ public class HandlerMysqlDataService implements Runnable {
         this.messageEndPosition = messageEndPosition;
     }
 
-    public HandlerMysqlDataService() {
-    }
-
-    public static synchronized HandlerMysqlDataService getInstance() {
-        return SentMsgHolder.sentMsgToKafkaWithJDBC;
-    }
 
 
     public static final String DRIVER = PropertiesUtils.getProperty("jdbc.driver");

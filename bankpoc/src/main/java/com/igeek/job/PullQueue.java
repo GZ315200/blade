@@ -6,13 +6,11 @@ import com.igeek.bean.Message;
 import com.igeek.cache.MessageCache;
 import com.igeek.cache.Queue;
 import com.igeek.controller.MessageController;
-import com.igeek.service.SentMsgToKafkaWithJDBC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
@@ -28,23 +26,6 @@ public class PullQueue implements Runnable {
     private List<Message> messageList = Lists.newArrayList();
 
     private static int SIZE = 100;
-
-
-
-    private static class PullQueueHolder {
-        private static final PullQueue PULL_QUEUE = new PullQueue();
-
-        private PullQueueHolder() {
-        }
-    }
-
-    private PullQueue() {
-
-    }
-
-    public static synchronized PullQueue getInstance() {
-        return PullQueueHolder.PULL_QUEUE;
-    }
 
     /**
      * 拉取数据至数据接口
@@ -82,7 +63,7 @@ public class PullQueue implements Runnable {
      * 启动线程将数据放入map缓存中
      */
     public void start() {
-       Executors.newScheduledThreadPool(1).scheduleAtFixedRate(PullQueue.getInstance(),10,5, TimeUnit.SECONDS);
+       Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new PullQueue(),10,5, TimeUnit.SECONDS);
     }
 
 

@@ -27,21 +27,6 @@ public class ProducerMessage implements Runnable {
 
     private String TOPIC = PropertiesUtils.getProperty("topic");
 
-    private static class ProducerHolder {
-        private static final ProducerMessage PRODUCER = new ProducerMessage();
-
-        private ProducerHolder() {
-        }
-    }
-
-    private ProducerMessage() {
-    }
-
-    public static synchronized ProducerMessage getInstance() {
-        return ProducerMessage.ProducerHolder.PRODUCER;
-    }
-
-
     public void producerMessageInfo() {
         KafkaProducer producer = new KafkaProducer(KafkaConfig.getProducerProperties());
         for (Object key : MessageCache.cache.keySet()) {
@@ -88,6 +73,6 @@ public class ProducerMessage implements Runnable {
 
 
     public void start() {
-        Executors.newScheduledThreadPool(1).scheduleAtFixedRate(ProducerMessage.getInstance(), 10, 5, TimeUnit.SECONDS);
+        Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new ProducerMessage(), 10, 5, TimeUnit.SECONDS);
     }
 }
