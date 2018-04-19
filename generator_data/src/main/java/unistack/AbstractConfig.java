@@ -50,12 +50,12 @@ public abstract class AbstractConfig {
 
     protected String addQuotation(String value) {return  " \""+value+"\"";}
 
-    protected String string(String key) {
+    protected  String string(String key) {
         return (String) config.get(key);
     }
 
-    protected Object integer(String key) {
-        return config.get(key);
+    protected static int integer(String key) {
+        return  Integer.valueOf((String) config.get(key));
     }
 
     protected Connection getDBConnection() {
@@ -110,6 +110,23 @@ public abstract class AbstractConfig {
         }
 
         return colMap;
+    }
+
+
+    public String[] getTableColumnsWithPrimaryKeys(String tableStr) throws SQLException {
+        List<String> strings = new ArrayList<>();
+        Map<String,ColumnInfo> getColumns = fetchColumns(tableStr,getDBConnection());
+        for (String key : getColumns.keySet()) {
+            ColumnInfo columnInfo = getColumns.get(key);
+            strings.add(key);
+            if (columnInfo.isPrimaryKey()) {
+                strings.add(0,columnInfo.getColumnName());
+            }
+            if (columnInfo.getDataType().equals("datetime")) {
+                strings.add(3,columnInfo.getColumnName());
+            }
+        }
+        return (String[]) strings.toArray();
     }
 
 

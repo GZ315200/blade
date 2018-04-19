@@ -11,14 +11,14 @@
  Target Server Version : 112010
  File Encoding         : utf-8
 
- Date: 03/13/2018 15:38:44 PM
+ Date: 03/20/2018 11:38:41 AM
 */
 
 -- ----------------------------
 --  Table structure for test
 -- ----------------------------
 DROP TABLE "UNISTACK"."test";
-CREATE TABLE "test" (   "id" NUMBER NOT NULL, "source" NUMBER, "sink" NUMBER);
+CREATE TABLE "test" (   "id" NUMBER NOT NULL, "source" NUMBER, "sink" NUMBER, "createtime" DATE);
 
 -- ----------------------------
 --  Primary key structure for table test

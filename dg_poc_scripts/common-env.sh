@@ -4,8 +4,6 @@
 SCRIPT_PATH=`dirname $0`
 echo $SCRIPT_PATH
 
-#LOG=${PWD}/tmp.log
-
 echo "[INFO] calling common-env.sh"
 
 myexecute() {

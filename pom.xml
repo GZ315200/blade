@@ -17,6 +17,7 @@
         <module>jmx-app</module>
         <module>igeek</module>
         <module>bankpoc</module>
+        <module>drill</module>
     </modules>
 
 </project>

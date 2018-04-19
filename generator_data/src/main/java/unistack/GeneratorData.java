@@ -5,8 +5,8 @@ import unistack.enums.FileEnums;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Random;
 
 /**
@@ -16,6 +16,9 @@ import java.util.Random;
 public class GeneratorData extends AbstractConfig implements BaseGenerate {
 
     private String fileName = null;
+
+
+
 
     @Override
     public void config(String fileName) {
@@ -58,32 +61,40 @@ public class GeneratorData extends AbstractConfig implements BaseGenerate {
     }
 
     public void batchInsertRecordsIntoTable() throws SQLException {
+        int WAIT_TIME = integer("wait.time");
         PreparedStatement ps = null;
         Connection dbConnection = null;
         try {
-            dbConnection = getConnection();
             int loop_count = Integer.parseInt(string("loop.count"));
             String tableName = string("table");
+            String[] index = new String[]{"sink", "source", "createtime"};
+
+            dbConnection = getConnection();
+//            dbConnection.setAutoCommit(false);
             ps = dbConnection.prepareStatement(
-                    buildSql(tableName, getTableColumns(tableName)));
-            dbConnection.setAutoCommit(false);
-            for (int i = 0; i < loop_count; i++) {
-                ps.setInt(1, Math.abs(new Random().nextInt()));
-                ps.setInt(2, Math.abs(new Random().nextInt()));
-                ps.setInt(3, Math.abs(new Random().nextInt()));
-                ps.addBatch();
+                    buildSql(tableName, index));
+            for (int i = 1; i <= loop_count; i++) {
+                ps.setInt(1, Math.abs(new Random().nextInt(5)));
+                ps.setInt(2, Math.abs(new Random().nextInt(5)));
+//                java.util.Date date = new Date();
+//                Object param = new java.sql.Date(date.getTime());
+// The JDBC driver knows what to do with a java.sql type:
+                Calendar cal = Calendar.getInstance();
+                ps.setTimestamp(3, new java.sql.Timestamp(cal.getTime().getTime()));
+                ps.executeUpdate();
+                Thread.sleep(WAIT_TIME);
+                System.out.println("执行了" + i + "语句");
             }
-            ps.executeBatch();
-            dbConnection.commit();
+//            dbConnection.commit();
             System.out.println("Record is inserted into table!");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } catch (SQLException | InterruptedException e) {
+            System.err.println(e);
         } finally {
-            if (ps != null) {
-                ps.close();
-            }
             if (dbConnection != null) {
                 dbConnection.close();
+            }
+            if (ps != null) {
+                ps.close();
             }
         }
 

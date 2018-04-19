@@ -48,6 +48,7 @@ public class Main {
                 .type(String.class)
                 .metavar("FILENAME")
                 .help("generate messages to this db");
+
         return parser;
     }
 }

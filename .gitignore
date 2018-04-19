@@ -24,3 +24,12 @@ nbdist/
 .nb-gradle/
 src/main/resources/static/
 src/message/
+bankpoc/src/main/java/org/
+generator_data/src/test/
+jmx-app/src/main/resources/static/
+jmx-app/src/main/resources/templates/
+ws-client/src/main/resources/static/
+ws-client/src/test/
+ws-server/src/main/resources/static/
+ws-server/src/main/resources/templates/
+ws-server/src/test/
