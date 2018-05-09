@@ -70,7 +70,7 @@ public class Utils {
         ByteBuffer buffer = ByteBuffer.allocate(myvar.length);
         buffer.put(myvar);
         buffer.rewind();
-        byte[] results = Utils.readBytes(buffer,5,3);
+        byte[] results = Utils.readBytes(buffer,4,7);
         String str = new String(results, StandardCharsets.UTF_8);
         System.out.println(str);
     }
